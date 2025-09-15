@@ -5,9 +5,13 @@ require('dotenv').config();
 
 const port = process.env.PORT;
 
-app.get('/', (req, res) => {
+// Connect mongoDb 
+const Connection = require('./config/connectionDb');
+Connection();
+
+app.get('/', async (req, res) => {
     res.send('Hello World!');
-})
+});
 
 app.listen(port, () => {
     console.log(`=========== http://localhost/:${port} ===========`);
