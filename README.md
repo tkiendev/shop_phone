@@ -31,7 +31,7 @@ npm start
 node src/server.js
 ```
 
-## 6. Lưu ý
+## Lưu ý
 
-tạo 1 file .env để chứa các biến môi trường coppy tên biến từ file example.env và liên hệ nhà phát triển để lấy giá trị 
+Tạo 1 file .env để chứa các biến môi trường coppy tên biến từ file example.env và liên hệ nhà phát triển để lấy giá trị 
 
