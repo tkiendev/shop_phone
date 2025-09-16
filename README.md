@@ -20,12 +20,12 @@ cd shop_phone
 npm install
 ```
 
-### 4. Chạy ở chế độ phát triển (sử dụng nodemon)
+### 3. Chạy ở chế độ phát triển (sử dụng nodemon)
 
 ```bash
 npm start
 ```
-### 5.Chạy ở chế độ bình thường
+### 4. Chạy ở chế độ bình thường
 
 ```bash
 node src/server.js
