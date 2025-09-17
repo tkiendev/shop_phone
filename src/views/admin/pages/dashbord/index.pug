@@ -1,0 +1,68 @@
+extends ../../layouts/default.pug
+
+block content
+    .container-fluid.mt-5
+      h2.mb-4 Dashboard tổng quan
+
+      // THỐNG KÊ NHANH
+      .row.text-center
+        .col-md-3.mb-4
+          .card.shadow-sm
+            .card-body
+              h5 Tổng sản phẩm
+              p.display-4.text-primary 128
+        .col-md-3.mb-4
+          .card.shadow-sm
+            .card-body
+              h5 Người dùng
+              p.display-4.text-success 45
+        .col-md-3.mb-4
+          .card.shadow-sm
+            .card-body
+              h5 Đơn hàng
+              p.display-4.text-danger 76
+        .col-md-3.mb-4
+          .card.shadow-sm
+            .card-body
+              h5 Doanh thu
+              p.display-4.text-warning ₫12.5M
+
+      // BIỂU ĐỒ (placeholder)
+      .row
+        .col-md-8
+          .card.shadow-sm.mb-4
+            .card-header Biểu đồ doanh thu (demo)
+            .card-body
+              canvas#revenueChart(width="400", height="150")
+        .col-md-4
+          .card.shadow-sm.mb-4
+            .card-header Thông báo hệ thống
+            .card-body
+              ul
+                li.text-muted Hệ thống hoạt động ổn định
+                li.text-muted 3 đơn hàng mới hôm nay
+                li.text-muted 1 người dùng mới đăng ký
+
+      // BẢNG HOẠT ĐỘNG GẦN ĐÂY
+      .card.shadow-sm.mb-5
+        .card-header Hoạt động gần đây
+        .card-body
+          table.table.table-hover
+            thead
+              tr
+                th Thời gian
+                th Hoạt động
+                th Người thực hiện
+            tbody
+              tr
+                td 17/09/2025 14:32
+                td Thêm sản phẩm "Áo thun"
+                td Kiên
+              tr
+                td 17/09/2025 13:10
+                td Xóa người dùng "Minh"
+                td Admin
+              tr
+                td 17/09/2025 09:45
+                td Cập nhật giá sản phẩm "Giày thể thao"
+                td Kiên

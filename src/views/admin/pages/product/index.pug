@@ -1,0 +1,80 @@
+extends ../../layouts/default.pug
+
+block content
+    .container-fluid.mt-5
+        h2.mb-4 Quản lý sản phẩm
+
+        // BỘ LỌC
+        .card.mb-4.shadow-sm
+            .card-body
+                form.form-inline
+                    input.form-control.mr-2#searchName(type="text", placeholder="Tìm theo tên...")
+                    select.form-control.mr-2#filterCategory
+                        option(value="") -- Danh mục --
+                        option(value="ao") Áo
+                        option(value="giay") Giày
+                        option(value="phukien") Phụ kiện
+                    select.form-control.mr-2#filterStatus
+                        option(value="") -- Trạng thái --
+                        option(value="conhang") Còn hàng
+                        option(value="hethang") Hết hàng
+                    button.btn.btn-primary(type="button", id="filterBtn") Lọc
+
+        .text-right.mb-3
+            button.btn.btn-success#addProductBtn ➕ Thêm sản phẩm
+
+        .card.shadow-sm
+            .card-header
+                h5.mb-2(style="text-align: center;") Danh sách sản phẩm
+                select.form-control.mr-2#sortOptions(style="width: 200px; display: inline-block;")
+                    option(value="") -- Sắp xếp --
+                    option(value="conhang") Còn hàng
+                    option(value="hethang") Hết hàng
+                    option(value="hethang") Tên A-Z
+                    option(value="hethang") Tên Z-A
+                    option(value="hethang") Giá từ thấp đến cao
+                    option(value="hethang") Giá từ cao đến thấp
+                    option(value="hethang") Vị trí từ lớn đến nhỏ
+                    option(value="hethang") Vị trí từ nhỏ đến lớn
+                    
+                
+            .card-body
+                table.table.table-bordered.table-hover
+                    thead.thead-dark
+                        tr
+                            th Ảnh
+                            th Tên
+                            th Danh mục
+                            th Giá
+                            th Giảm giá
+                            th Trạng thái
+                            th Vị trí
+                            th Hành động
+
+                        tbody
+                            tr
+                                td
+                                    img(src="", alt="Áo hoodie", style="width: 60px; height: 60px; object-fit: cover; border-radius: 4px;")
+                                td Áo hoodie nam
+                                td
+                                    span.category-label.category-ao Áo
+                                td 320,000₫
+                                td 10%
+                                td
+                                    span.badge.badge-success Còn hàng
+                                td Kệ A1
+                                td
+                                    button.btn.btn-sm.btn-info 👁️
+                                    button.btn.btn-sm.btn-warning ✏️
+                                    button.btn.btn-sm.btn-danger ❌
+
+        nav.mt-4
+            ul.pagination
+                li.page-item.disabled
+                a.page-link(href="#") «
+                li.page-item.active
+                a.page-link(href="#") 1
+                li.page-item
+                a.page-link(href="#") 2
+                li.page-item
+                a.page-link(href="#") »

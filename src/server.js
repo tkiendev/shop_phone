@@ -6,6 +6,8 @@ require('dotenv').config();
 const port = process.env.PORT || 3000;
 
 const userRoute = require('./route/user/index.route.js');
+const adminRote = require('./route/admin/index.route.js');
+
 
 // Connect mongoDb 
 const Connection = require('./config/connectionDb');
@@ -20,6 +22,7 @@ app.set('views', __dirname + `/views`);
 
 // route
 userRoute(app);
+adminRote(app);
 
 app.listen(port, () => {
     console.log(`=========== http://localhost/:${port} ===========`);

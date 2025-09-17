@@ -1,0 +1,138 @@
+/* RESET */
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+}
+
+/* === HEADER === */
+.header .navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    z-index: 1030;
+}
+
+/* === SIDEBAR === */
+.sidebar {
+    position: fixed;
+    top: 56px;
+    left: 0;
+    width: 220px;
+    height: calc(100vh - 56px);
+    background-color: #f8f9fa;
+    border-right: 1px solid #dee2e6;
+    overflow-y: auto;
+    padding-top: 20px;
+    z-index: 1020;
+}
+
+/* === MAIN CONTENT === */
+.body {
+    margin-top: 20px;
+    margin-left: 240px;
+    padding: 10px;
+}
+
+/* NAVIGATION LINKS */
+.sidebar .nav-link {
+    color: #343a40;
+    padding: 8px 12px;
+    transition: background-color 0.2s ease;
+}
+
+.sidebar .nav-link:hover {
+    background-color: #e9ecef;
+    border-radius: 4px;
+}
+
+.sidebar .nav-link.active {
+    font-weight: bold;
+    color: #007bff;
+}
+
+/* === dashbord === */
+.card {
+    border-radius: 8px;
+}
+
+.card-header {
+    font-weight: bold;
+    background-color: #f1f1f1;
+}
+
+.display-4 {
+    font-size: 2.5rem;
+    margin: 0;
+}
+
+/* === prducts === */
+
+.card {
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
+.table th {
+    background-color: #343a40;
+    color: white;
+}
+
+.table td {
+    background-color: #ffffff;
+    vertical-align: middle !important;
+}
+
+.btn {
+    min-width: 90px;
+    margin-right: 5px;
+}
+
+form.form-inline .form-control {
+    margin-right: 10px;
+    min-width: 150px;
+}
+
+.category-label {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: white;
+    text-align: center;
+    min-width: 80px;
+}
+
+.category-ao {
+    background-color: #007bff;
+}
+
+.category-giay {
+    background-color: #28a745;
+}
+
+.category-phukien {
+    background-color: #ffc107;
+}
+
+.pagination .page-link {
+    cursor: pointer;
+}
+
+table img {
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+}
+
+table img:hover {
+    transform: scale(1.05);
+}
+
+td:nth-child(7) {
+    font-weight: 500;
+    color: #555;
+}
