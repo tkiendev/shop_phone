@@ -47,26 +47,32 @@ block content
                             th Danh mục
                             th Giá
                             th Giảm giá
+                            th Số lượng
                             th Trạng thái
                             th Vị trí
                             th Hành động
 
                         tbody
-                            tr
-                                td
-                                    img(src="", alt="Áo hoodie", style="width: 60px; height: 60px; object-fit: cover; border-radius: 4px;")
-                                td Áo hoodie nam
-                                td
-                                    span.category-label.category-ao Áo
-                                td 320,000₫
-                                td 10%
-                                td
-                                    span.badge.badge-success Còn hàng
-                                td Kệ A1
-                                td
-                                    button.btn.btn-sm.btn-info 👁️
-                                    button.btn.btn-sm.btn-warning ✏️
-                                    button.btn.btn-sm.btn-danger ❌
+                            each product in products
+                                tr
+                                    td
+                                        img(src=product.image, alt=product.name, style="width: 60px; height: 60px; object-fit: cover; border-radius: 4px;")
+                                    td 3#{product.name}
+                                    td Danh mục
+                                    td #{product.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
+                                    td #{product.discountPercent}%
+                                    td #{product.quantity}
+                                    td
+                                        if product.status == 'active'
+                                            span.badge.badge-success Hoạt động
+                                        else if product.status == 'inactive'
+                                            span.badge.badge-danger Ngừng hoạt động
+                                    td #{product.position}
+                                    td
+                                        button.btn.btn-sm.btn-info(title="Xem chi tiết") Xem
+                                        button.btn.btn-sm.btn-warning(title="Chỉnh sửa") Sửa
+                                        button.btn.btn-sm.btn-danger(title="Xóa") Xóa
+
 
         nav.mt-4
             ul.pagination
