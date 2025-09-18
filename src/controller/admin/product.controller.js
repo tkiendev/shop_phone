@@ -1,12 +1,24 @@
 const productModel = require('../../models/product.model');
 
+const searchHelper = require('../../helpers/search');
+
+// [GET] /admin/products
 module.exports.index = async (req, res) => {
     try {
-        const products = await productModel.find({
+        const query = req.query;
+        const find = {
             deleted: false
-        });
+        };
 
-        console.log(products.length);
+        // Search by name
+        const keyword = searchHelper(query.keyword);
+        if (keyword) {
+            find.name = keyword;
+        }
+
+        // Take out the products
+        const products = await productModel.find(find);
+
         if (products.length === 0) {
             req.flash('warning', 'Không có sản phẩm nào trong hệ thống!');
         }
@@ -15,14 +27,16 @@ module.exports.index = async (req, res) => {
             pageTitle: 'Quản lý sản phẩm',
             lickReload: '/admin/products',
             activeProduct: true,
-            products: products
+            products: products,
+            keywordSearch: keyword ? query.keyword : ''
         });
     } catch (error) {
-        req.flash('error', 'Lấy danh sách sản phẩm thất bại!');
+        req.flash('error', 'Không thể load trang!');
         res.redirect('/admin/dashboard');
     }
 }
 
+// [PATCH] /admin/products/change-status/:id/:status
 module.exports.changeStatus = async (req, res) => {
     const productId = req.params.id;
     const status = req.params.status;
@@ -40,5 +54,4 @@ module.exports.changeStatus = async (req, res) => {
         req.flash('error', 'Cập nhật trạng thái sản phẩm thất bại!');
         res.redirect('/admin/products');
     }
-
 }

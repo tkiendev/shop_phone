@@ -7,8 +7,24 @@ block content
         // BỘ LỌC
         .card.mb-4.shadow-sm
             .card-body
-                form.form-inline
-                    input.form-control.mr-2#searchName(type="text", placeholder="Tìm theo tên...")
+                .row
+                    .col-md-6
+                        form.form-inline
+                            select.form-control.mr-2#filterCategory
+                                option(value="") -- Thay đổi nhanh --
+                                option(value="ao") Áo
+                                option(value="giay") Giày
+                                option(value="phukien") Phụ kiện
+                            button.btn.btn-primary(type="button", id="filterBtn") Thay đổi
+                    .col-md-6.text-right
+                            button.btn.btn-success#addProductBtn Thêm sản phẩm
+                            button.btn.btn-danger#trashProductBtn Thùng rác
+
+        .card.shadow-sm
+            .card-header
+                h5.mb-2(style="text-align: center;") Danh sách sản phẩm
+                .form-inline
+                    input.form-control.mr-2#searchName(type="text", placeholder="Tìm theo tên...", value=keywordSearch)
                     select.form-control.mr-2#filterCategory
                         option(value="") -- Danh mục --
                         option(value="ao") Áo
@@ -18,24 +34,8 @@ block content
                         option(value="") -- Trạng thái --
                         option(value="conhang") Còn hàng
                         option(value="hethang") Hết hàng
-                    button.btn.btn-primary(type="button", id="filterBtn") Lọc
+                    button.btn.btn-primary(type="button", filterBtn) Lọc
 
-        .text-right.mb-3
-            button.btn.btn-success#addProductBtn ➕ Thêm sản phẩm
-
-        .card.shadow-sm
-            .card-header
-                h5.mb-2(style="text-align: center;") Danh sách sản phẩm
-                select.form-control.mr-2#sortOptions(style="width: 200px; display: inline-block;")
-                    option(value="") -- Sắp xếp --
-                    option(value="conhang") Còn hàng
-                    option(value="hethang") Hết hàng
-                    option(value="hethang") Tên A-Z
-                    option(value="hethang") Tên Z-A
-                    option(value="hethang") Giá từ thấp đến cao
-                    option(value="hethang") Giá từ cao đến thấp
-                    option(value="hethang") Vị trí từ lớn đến nhỏ
-                    option(value="hethang") Vị trí từ nhỏ đến lớn
                     
                 
             .card-body

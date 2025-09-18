@@ -12,3 +12,23 @@ if (alert) {
         notification.remove();
     }, time);
 }
+
+// seach & filter
+const href = window.location.href;
+const inputSearchName = document.querySelector('#searchName');
+if (inputSearchName) {
+    const url = new URL(href);
+    const btnFilter = document.querySelector('[filterBtn]');
+    if (btnFilter) {
+        btnFilter.addEventListener('click', (event) => {
+            event.preventDefault();
+            const keyword = inputSearchName.value;
+            if (keyword === '') {
+                url.searchParams.delete('keyword');
+            } else {
+                url.searchParams.set('keyword', keyword);
+            }
+            window.location.href = url;
+        });
+    }
+}
