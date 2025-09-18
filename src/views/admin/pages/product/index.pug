@@ -54,15 +54,15 @@ block content
 
                         tbody
                             each product in products
-                                tr
+                                tr(id=product.id)
                                     td
                                         img(src=product.image, alt=product.name, style="width: 60px; height: 60px; object-fit: cover; border-radius: 4px;")
-                                    td 3#{product.name}
+                                    td #{product.name}
                                     td Danh mục
                                     td #{product.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
                                     td #{product.discountPercent}%
                                     td #{product.quantity}
-                                    td
+                                    td( status=product.status , style="cursor: pointer;" )
                                         if product.status == 'active'
                                             span.badge.badge-success Hoạt động
                                         else if product.status == 'inactive'
@@ -84,3 +84,7 @@ block content
                 a.page-link(href="#") 2
                 li.page-item
                 a.page-link(href="#") »
+
+    form(action="/admin/change-status", method="POST" , form-change-status class="d-none")
+    
+    script(type="module", src="/public/admin/scripts/product.js") 

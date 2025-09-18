@@ -8,6 +8,12 @@ const port = process.env.PORT || 3000;
 const userRoute = require('./route/user/index.route.js');
 const adminRote = require('./route/admin/index.route.js');
 
+// methed
+var methodOverride = require('method-override');
+var bodyParser = require('body-parser');
+
+app.use(bodyParser.urlencoded())
+app.use(methodOverride('_method'));
 
 // Connect mongoDb 
 const Connection = require('./config/connectionDb');
