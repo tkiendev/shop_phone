@@ -9,11 +9,20 @@ const userRoute = require('./route/user/index.route.js');
 const adminRote = require('./route/admin/index.route.js');
 
 // methed
-var methodOverride = require('method-override');
-var bodyParser = require('body-parser');
+const methodOverride = require('method-override');
+const bodyParser = require('body-parser');
 
 app.use(bodyParser.urlencoded())
 app.use(methodOverride('_method'));
+
+// flash 
+const flash = require('express-flash');
+const cookieParser = require('cookie-parser');
+var session = require('express-session');
+
+app.use(cookieParser('ngvaergeralng'));
+app.use(session({ cookie: { maxAge: 60000 } }));
+app.use(flash());
 
 // Connect mongoDb 
 const Connection = require('./config/connectionDb');

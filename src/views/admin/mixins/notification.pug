@@ -1,0 +1,16 @@
+mixin notification(dataTime, messages)
+    if messages.success
+        .alert.alert-success.alert-dismissible.fade.show.custom-alert(role="alert" time=dataTime)
+            | ✅ #{messages.success}
+            button.close(type="button", data-dismiss="alert", aria-label="Close")
+                span(aria-hidden="true") &times;
+    if messages.error
+        .alert.alert-danger.alert-dismissible.fade.show.custom-alert(role="alert" time=dataTime)
+            | ❌ #{messages.error}
+            button.close(type="button", data-dismiss="alert", aria-label="Close")
+                span(aria-hidden="true") &times;
+    if messages.warning
+        .alert.alert-warning.alert-dismissible.fade.show.custom-alert(role="alert" time=dataTime)
+            | ⚠️ #{messages.warning}
+            button.close(type="button", aria-label="Close", onclick="dismissAlert(this)")
+                span(aria-hidden="true") &times;

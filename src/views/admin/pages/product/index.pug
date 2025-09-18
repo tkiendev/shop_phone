@@ -53,25 +53,29 @@ block content
                             th Hành động
 
                         tbody
-                            each product in products
-                                tr(id=product.id)
-                                    td
-                                        img(src=product.image, alt=product.name, style="width: 60px; height: 60px; object-fit: cover; border-radius: 4px;")
-                                    td #{product.name}
-                                    td Danh mục
-                                    td #{product.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
-                                    td #{product.discountPercent}%
-                                    td #{product.quantity}
-                                    td( status=product.status , style="cursor: pointer;" )
-                                        if product.status == 'active'
-                                            span.badge.badge-success Hoạt động
-                                        else if product.status == 'inactive'
-                                            span.badge.badge-danger Ngừng hoạt động
-                                    td #{product.position}
-                                    td
-                                        button.btn.btn-sm.btn-info(title="Xem chi tiết") Xem
-                                        button.btn.btn-sm.btn-warning(title="Chỉnh sửa") Sửa
-                                        button.btn.btn-sm.btn-danger(title="Xóa") Xóa
+                            if products.length === 0
+                                tr
+                                    td(colspan="9", style="text-align: center;") Không có sản phẩm nào.
+                            else
+                                each product in products
+                                    tr(id=product.id)
+                                        td
+                                            img(src=product.image, alt=product.name, style="width: 60px; height: 60px; object-fit: cover; border-radius: 4px;")
+                                        td #{product.name}
+                                        td Danh mục
+                                        td #{product.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
+                                        td #{product.discountPercent}%
+                                        td #{product.quantity}
+                                        td( status=product.status , style="cursor: pointer;" )
+                                            if product.status == 'active'
+                                                span.badge.badge-success Hoạt động
+                                            else if product.status == 'inactive'
+                                                span.badge.badge-danger Ngừng hoạt động
+                                        td #{product.position}
+                                        td
+                                            button.btn.btn-sm.btn-info(title="Xem chi tiết") Xem
+                                            button.btn.btn-sm.btn-warning(title="Chỉnh sửa") Sửa
+                                            button.btn.btn-sm.btn-danger(title="Xóa") Xóa
 
 
         nav.mt-4
