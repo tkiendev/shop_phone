@@ -48,10 +48,12 @@ module.exports.changeStatus = async (req, res) => {
             );
 
             req.flash('success', 'Cập nhật trạng thái sản phẩm thành công!');
-            res.redirect('/admin/products');
+            const previousPage = req.get('Referer') || '/';
+            res.redirect(previousPage);
         }
     } catch (error) {
         req.flash('error', 'Cập nhật trạng thái sản phẩm thất bại!');
-        res.redirect('/admin/products');
+        const previousPage = req.get('Referer') || '/';
+        res.redirect(previousPage);
     }
 }

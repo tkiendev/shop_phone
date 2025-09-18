@@ -22,7 +22,7 @@ if (inputSearchName) {
     if (btnFilter) {
         btnFilter.addEventListener('click', (event) => {
             event.preventDefault();
-            const keyword = inputSearchName.value;
+            const keyword = inputSearchName.value.trim();
             if (keyword === '') {
                 url.searchParams.delete('keyword');
             } else {
