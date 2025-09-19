@@ -6,6 +6,12 @@ const searchHelper = require('../../helpers/search');
 module.exports.index = async (req, res) => {
     try {
         const query = req.query;
+        let sort = {
+            position: 'asc'
+        }
+        if (query.sortName && query.sortType) {
+            sort = { [query.sortName]: query.sortType === 'asc' ? 'asc' : 'desc' };
+        }
         const find = {
             deleted: false
         };
@@ -22,7 +28,7 @@ module.exports.index = async (req, res) => {
         }
 
         // Take out the products
-        const products = await productModel.find(find);
+        const products = await productModel.find(find).sort(sort);
 
         if (products.length === 0) {
             req.flash('warning', 'Không có sản phẩm nào trong hệ thống!');

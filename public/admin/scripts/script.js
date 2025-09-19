@@ -52,3 +52,22 @@ if (filterStatus) {
         });
     }
 }
+
+// sort
+const filterSort = document.querySelector('#filterSort');
+console.log(filterSort);
+if (filterSort) {
+    filterSort.addEventListener('change', (event) => {
+        event.preventDefault();
+        const sortName = filterSort.value;
+        const sortType = filterSort.options[filterSort.selectedIndex].getAttribute('valueSort');
+        if (sortName === '') {
+            url.searchParams.delete('sortName');
+            url.searchParams.delete('sortType');
+        } else {
+            url.searchParams.set('sortName', sortName);
+            url.searchParams.set('sortType', sortType);
+        }
+        window.location.href = url;
+    });
+}
