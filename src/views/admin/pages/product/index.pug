@@ -83,9 +83,9 @@ block content
                                                 span.badge.badge-danger Ngừng hoạt động
                                         td #{product.position}
                                         td
-                                            button.btn.btn-sm.btn-info(title="Xem chi tiết") Xem
-                                            button.btn.btn-sm.btn-warning(title="Chỉnh sửa") Sửa
-                                            button.btn.btn-sm.btn-danger(title="Xóa") Xóa
+                                            button.btn.btn-sm.btn-info(type="detail") Xem
+                                            button.btn.btn-sm.btn-warning(type="edit") Sửa
+                                            button.btn.btn-sm.btn-danger(type="delete") Xóa
 
 
         nav.mt-4
@@ -100,5 +100,6 @@ block content
                 a.page-link(href="#") »
 
     form(action="/admin/change-status", method="POST" , form-change-status class="d-none")
+    form(action="/admin/products", method="POST" , form-delete class="d-none")
     
     script(type="module", src="/public/admin/scripts/product.js") 

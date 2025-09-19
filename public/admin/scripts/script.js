@@ -55,7 +55,6 @@ if (filterStatus) {
 
 // sort
 const filterSort = document.querySelector('#filterSort');
-console.log(filterSort);
 if (filterSort) {
     filterSort.addEventListener('change', (event) => {
         event.preventDefault();
