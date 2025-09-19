@@ -23,18 +23,27 @@ block content
         .card.shadow-sm
             .card-header
                 h5.mb-2(style="text-align: center;") Danh sách sản phẩm
-                .form-inline
-                    input.form-control.mr-2#searchName(type="text", placeholder="Tìm theo tên...", value=keywordSearch)
-                    select.form-control.mr-2#filterCategory
-                        option(value="") -- Danh mục --
-                        option(value="ao") Áo
-                        option(value="giay") Giày
-                        option(value="phukien") Phụ kiện
-                    select.form-control.mr-2#filterStatus
-                        option(value="") -- Trạng thái --
-                        option(value="conhang") Còn hàng
-                        option(value="hethang") Hết hàng
-                    button.btn.btn-primary(type="button", filterBtn) Lọc
+                .row.mb-3
+                    .col-md-10
+                        .form-inline
+
+                            input.form-control.mr-2#searchName(type="text", placeholder="Tìm theo tên...", value=keywordSearch)
+                            select.form-control.mr-2#filterCategory
+                                option(value="") -- Danh mục --
+                                option(value="ao") Áo
+                                option(value="giay") Giày
+                                option(value="phukien") Phụ kiện
+                            select.form-control.mr-2#filterStatus
+                                option(value="") -- Trạng thái --
+                                option(value="active", selected=(status === 'active')) Hoạt động
+                                option(value="inactive", selected=(status === 'inactive')) Dừng hoạt động
+                            button.btn.btn-primary(type="button", filterBtn) Lọc
+
+                    .col-md-2.text-right
+                        select.form-control.mr-2#filterSort
+                            option(value="") -- Sắp xếp --
+                            option(value="giathap") Giá thấp
+                            option(value="giacao") Giá cao
 
                     
                 

@@ -13,11 +13,13 @@ if (alert) {
     }, time);
 }
 
-// seach & filter
 const href = window.location.href;
+const url = new URL(href);
+// seach & filter
+
+// search by name
 const inputSearchName = document.querySelector('#searchName');
 if (inputSearchName) {
-    const url = new URL(href);
     const btnFilter = document.querySelector('[filterBtn]');
     if (btnFilter) {
         btnFilter.addEventListener('click', (event) => {
@@ -27,6 +29,24 @@ if (inputSearchName) {
                 url.searchParams.delete('keyword');
             } else {
                 url.searchParams.set('keyword', keyword);
+            }
+            window.location.href = url;
+        });
+    }
+}
+
+// filter by status
+const filterStatus = document.querySelector('#filterStatus');
+if (filterStatus) {
+    const btnFilter = document.querySelector('[filterBtn]');
+    if (btnFilter) {
+        btnFilter.addEventListener('click', (event) => {
+            event.preventDefault();
+            const status = filterStatus.value;
+            if (status === '') {
+                url.searchParams.delete('status');
+            } else {
+                url.searchParams.set('status', status);
             }
             window.location.href = url;
         });

@@ -16,6 +16,11 @@ module.exports.index = async (req, res) => {
             find.name = keyword;
         }
 
+        // filter by status
+        if (query.status) {
+            find.status = query.status;
+        }
+
         // Take out the products
         const products = await productModel.find(find);
 
@@ -28,7 +33,8 @@ module.exports.index = async (req, res) => {
             lickReload: '/admin/products',
             activeProduct: true,
             products: products,
-            keywordSearch: keyword ? query.keyword : ''
+            keywordSearch: keyword ? query.keyword : '',
+            status: query.status || ''
         });
     } catch (error) {
         req.flash('error', 'Không thể load trang!');
