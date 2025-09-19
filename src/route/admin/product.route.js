@@ -7,5 +7,7 @@ route.get('/', productController.index);
 route.patch('/change-status/:id/:status', productController.changeStatus);
 
 route.delete('/delete/:id', productController.delete);
+route.patch('/change-position/:id', productController.changePosition);
+
 
 module.exports = route;

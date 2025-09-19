@@ -41,3 +41,22 @@ if (formDelete) {
         }
     });
 }
+
+// change position
+const formPosition = document.querySelectorAll('form[change-position]');
+if (formPosition) {
+    formPosition.forEach(form => {
+        const input = form.querySelector('input[name="position"]');
+        if (input) {
+            form.addEventListener('submit', (event) => {
+                input.addEventListener('click', (e) => {
+                    e.preventDefault();
+                });
+                event.preventDefault();
+                form.action = `${form.action}/?_method=PATCH`;
+                form.submit();
+            });
+        }
+
+    });
+}

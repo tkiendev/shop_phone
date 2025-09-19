@@ -94,3 +94,28 @@ module.exports.delete = async (req, res) => {
         res.redirect(previousPage);
     }
 }
+
+// [PATCH] /admin/products/change-position/:id
+module.exports.changePosition = async (req, res) => {
+    try {
+        const productId = req.params.id;
+        const product = await productModel.findOne({ _id: productId });
+        if (product) {
+            await productModel.updateOne(
+                { _id: productId },
+                { position: parseInt(req.body.position) }
+            );
+            req.flash('success', 'Cập nhật vị trí sản phẩm thành công!');
+            const previousPage = req.get('Referer') || '/';
+            res.redirect(previousPage);
+        } else {
+            req.flash('warning', 'Không tìm thấy sản phẩm!');
+            const previousPage = req.get('Referer') || '/';
+            res.redirect(previousPage);
+        }
+    } catch (error) {
+        req.flash('error', 'Cập nhật vị trí sản phẩm thất bại!');
+        const previousPage = req.get('Referer') || '/';
+        res.redirect(previousPage);
+    }
+}

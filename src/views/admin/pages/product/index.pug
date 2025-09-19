@@ -81,7 +81,9 @@ block content
                                                 span.badge.badge-success Hoạt động
                                             else if product.status == 'inactive'
                                                 span.badge.badge-danger Ngừng hoạt động
-                                        td #{product.position}
+                                        td 
+                                            form(action=`/admin/products/change-position/${product.id}`, method="POST", class="d-inline-block", change-position)
+                                                input(type="number", name="position", value=product.position, min="0", class="form-control position-input", style="width: 70px; margin: 0 auto;")
                                         td
                                             button.btn.btn-sm.btn-info(type="detail") Xem
                                             button.btn.btn-sm.btn-warning(type="edit") Sửa
