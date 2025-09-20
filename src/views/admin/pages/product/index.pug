@@ -9,13 +9,15 @@ block content
             .card-body
                 .row
                     .col-md-6
-                        form.form-inline
-                            select.form-control.mr-2#filterCategory
+                        form.form-inline(action="/admin/products/change-multi?_method=PATCH", method="POST", change-multi)
+                            input.d-none(type="text", name="ids")
+                            select.form-control.mr-2#change-multi(style="text-align: center;" name ="action")
                                 option(value="") -- Thay đổi nhanh --
-                                option(value="ao") Áo
-                                option(value="giay") Giày
-                                option(value="phukien") Phụ kiện
-                            button.btn.btn-primary(type="button", id="filterBtn") Thay đổi
+                                option(value="change-delete") Xóa nhiều sản phẩm
+                                option(value="change-position") Thay đổi vị trí nhiều sản phẩm
+                                option(value="change-active") Thay đổi trạng thái hoạt động
+                                option(value="change-inactive") Thay đổi trạng thái dừng hoạt động
+                            button.btn.btn-primary(type="submit", id="filterBtn") Thay đổi
                     .col-md-6.text-right
                             button.btn.btn-outline-success#addProductBtn Thêm sản phẩm
                             button.btn.btn-outline-danger#trashProductBtn Thùng rác
@@ -52,6 +54,8 @@ block content
                 table.table.table-bordered.table-hover
                     thead.thead-dark
                         tr( style="text-align: center;" )
+                            th 
+                                input(type="checkbox", name="allSelect", id="selectAll")
                             th Ảnh
                             th Tên
                             th Danh mục
@@ -70,6 +74,8 @@ block content
                                 each product in products
                                     tr(id=product.id  style="text-align: center;" )
                                         td
+                                            input(type="checkbox", name="selected", value=product.id)
+                                        td
                                             img(src=product.image, alt=product.name, style="width: 60px; height: 60px; object-fit: cover; border-radius: 4px;")
                                         td #{product.name}
                                         td Danh mục
@@ -85,9 +91,9 @@ block content
                                             form(action=`/admin/products/change-position/${product.id}`, method="POST", class="d-inline-block", change-position)
                                                 input(type="number", name="position", value=product.position, min="0", class="form-control position-input", style="width: 70px; margin: 0 auto;")
                                         td
-                                            button.btn.btn-sm.btn-info(type="detail") Xem
-                                            button.btn.btn-sm.btn-warning(type="edit") Sửa
-                                            button.btn.btn-sm.btn-danger(type="delete") Xóa
+                                            button.btn.btn-sm.btn-info.mt-1(type="detail") Xem
+                                            button.btn.btn-sm.btn-warning.mt-1(type="edit") Sửa
+                                            button.btn.btn-sm.btn-danger.mt-1(type="delete") Xóa
 
 
         nav.mt-4

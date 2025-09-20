@@ -70,3 +70,64 @@ if (filterSort) {
         window.location.href = url;
     });
 }
+
+// select all
+const selectAll = document.querySelector('#selectAll');
+if (selectAll) {
+    const checkboxes = document.querySelectorAll('input[name="selected"]');
+
+    selectAll.addEventListener('click', (event) => {
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = selectAll.checked;
+        });
+    });
+
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('click', (event) => {
+            let checkAll = 0;
+            checkboxes.forEach(box => {
+                if (box.checked) checkAll++;
+            });
+
+            // check if all selected
+            checkAll === checkboxes.length ? selectAll.checked = true : selectAll.checked = false;
+        });
+    });
+
+}
+
+// change multi
+const formChangMulti = document.querySelector('form[change-multi]');
+if (formChangMulti) {
+    formChangMulti.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const checkboxes = document.querySelectorAll('input[name="selected"]');
+        let ids = [];
+        if (checkboxes.length > 0) {
+            checkboxes.forEach((box) => {
+                if (box.checked === true) {
+
+                    const select = formChangMulti.querySelector('select');
+                    if (select) {
+                        const productPosition = box.parentElement.parentElement.querySelector('input[name=position]').value;
+                        select.value === 'change-position' ? ids.push(`${box.value}_${productPosition}`) : ids.push(box.value);
+                    } else {
+                        ids.push(box.value);
+                    }
+                }
+            });
+        }
+
+        if (ids.length === 0) {
+            confirm('Vui lòng chọn ít nhất 1 sản phẩm');
+            return;
+        }
+
+        const inputIds = formChangMulti.querySelector('input');
+        if (inputIds) {
+            inputIds.value = ids.toString();
+        }
+
+        formChangMulti.submit();
+    })
+}

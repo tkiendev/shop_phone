@@ -119,3 +119,65 @@ module.exports.changePosition = async (req, res) => {
         res.redirect(previousPage);
     }
 }
+
+// [PATCH] /admin/products/change-multi
+module.exports.changeMulti = async (req, res) => {
+    try {
+        const { ids, action } = req.body
+        if (ids.split(",").length === 0) {
+            req.flash('warning', 'Vui lòng chọn ít nhất 1 sản phẩm');
+            const previousPage = req.get('Referer') || '/';
+            res.redirect(previousPage);
+            return;
+        }
+
+        let message = ''
+        switch (action) {
+            case 'change-delete': {
+                const arrayId = ids.split(",");
+
+                await productModel.updateMany({ _id: { $in: [...arrayId] } }, { $set: { deleted: true } });
+                message = `Xóa thành công ${arrayId.length} sản phẩm`;
+                break;
+            }
+            case 'change-position': {
+                const arrayId = ids.split(",");
+
+                for (item of arrayId) {
+                    const [id, position] = item.split("_");
+                    await productModel.updateOne({ _id: id }, { position: position })
+                }
+                message = `Thay vị trí ${arrayId.length} sản phẩm`;
+                break;
+            }
+            case 'change-active': {
+                const arrayId = ids.split(",");
+
+                await productModel.updateMany({ _id: { $in: [...arrayId] } }, { $set: { status: 'active' } });
+                message = `Thay đổi trạng thái hoạt động ${arrayId.length} sản phẩm`;
+                break;
+            }
+            case 'change-inactive': {
+                const arrayId = ids.split(",");
+
+                await productModel.updateMany({ _id: { $in: [...arrayId] } }, { $set: { status: 'inactive' } });
+                message = `Thay đổi trạng thái dừng hoạt động ${arrayId.length} sản phẩm`;
+                break;
+            }
+            default:
+                req.flash('warning', 'Vui lòng chọn trạng thái cập nhật');
+                const previousPage = req.get('Referer') || '/';
+                res.redirect(previousPage);
+                break;
+        }
+
+        req.flash('success', message);
+        const previousPage = req.get('Referer') || '/';
+        res.redirect(previousPage);
+    }
+    catch (error) {
+        req.flash('error', 'Cập nhật sản phẩm thất bại!');
+        const previousPage = req.get('Referer') || '/';
+        res.redirect(previousPage);
+    }
+}
