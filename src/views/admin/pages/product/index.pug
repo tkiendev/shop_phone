@@ -97,15 +97,15 @@ block content
 
 
         nav.mt-4
-            ul.pagination
-                li.page-item.disabled
-                a.page-link(href="#") «
-                li.page-item.active
-                a.page-link(href="#") 1
-                li.page-item
-                a.page-link(href="#") 2
-                li.page-item
-                a.page-link(href="#") »
+            ul.pagination(id="pagination")
+                li.page-item(page = (currentPage - 1) class=(currentPage == 1 ? "d-none" : ""))
+                    span.page-link «
+                - const pages = Array.from({ length: lengthPage }, (_, i) => i + 1);
+                each page in pages 
+                    li.page-item(page = page class=(currentPage == page ? "active" : ""))
+                        span.page-link #{page}
+                li.page-item(page = (currentPage + 1) class=(currentPage == lengthPage ? "d-none" : ""))
+                    span.page-link »
 
     form(action="/admin/change-status", method="POST" , form-change-status class="d-none")
     form(action="/admin/products", method="POST" , form-delete class="d-none")

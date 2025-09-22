@@ -131,3 +131,23 @@ if (formChangMulti) {
         formChangMulti.submit();
     })
 }
+
+// pagination
+const pagination = document.querySelector('#pagination');
+if (pagination) {
+    const pages = pagination.querySelectorAll('li');
+    if (pages.length !== 0) {
+        pages.forEach((page) => {
+            page.addEventListener('click', (event) => {
+                const ValuePage = page.getAttribute('page');
+                if (ValuePage) {
+                    url.searchParams.set('page', ValuePage);
+                } else {
+                    url.searchParams.delete('page');
+                }
+
+                window.location.href = url
+            });
+        });
+    }
+}

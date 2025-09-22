@@ -27,8 +27,25 @@ module.exports.index = async (req, res) => {
             find.status = query.status;
         }
 
+        // pagination
+        let pagination = {}
+        if (query.page || query.limit) {
+            pagination = {
+                page: query.page ? parseInt(query.page) : 1,
+                limit: query.limit ? parseInt(query.limit) : 4
+            }
+        } else {
+            pagination = {
+                page: 1,
+                limit: 4
+            }
+        }
+
+        const countDocuments = await productModel.countDocuments();
+        const lengthPage = Math.floor(countDocuments / pagination.limit);
+
         // Take out the products
-        const products = await productModel.find(find).sort(sort);
+        const products = await productModel.find(find).sort(sort).skip((pagination.page - 1) * 4).limit(pagination.limit);
 
         if (products.length === 0) {
             req.flash('warning', 'Không có sản phẩm nào trong hệ thống!');
@@ -40,7 +57,9 @@ module.exports.index = async (req, res) => {
             activeProduct: true,
             products: products,
             keywordSearch: keyword ? query.keyword : '',
-            status: query.status || ''
+            status: query.status || '',
+            lengthPage: lengthPage,
+            currentPage: pagination.page
         });
     } catch (error) {
         req.flash('error', 'Không thể load trang!');
