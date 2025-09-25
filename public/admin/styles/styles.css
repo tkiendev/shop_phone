@@ -175,3 +175,20 @@ td:nth-child(7) {
 .fade-out {
     animation: fadeOut 0.5s forwards;
 }
+
+/* create product */
+.card {
+    border-radius: 10px;
+}
+
+.card-body {
+    padding: 2rem;
+}
+
+label {
+    font-weight: 500;
+}
+
+.btn-success {
+    font-size: 1.1rem;
+}

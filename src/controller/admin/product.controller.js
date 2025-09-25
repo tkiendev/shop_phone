@@ -1,4 +1,5 @@
 const productModel = require('../../models/product.model');
+const productMethodModel = require('../../models/productMethod.model');
 
 const searchHelper = require('../../helpers/search');
 
@@ -196,6 +197,92 @@ module.exports.changeMulti = async (req, res) => {
     }
     catch (error) {
         req.flash('error', 'Cập nhật sản phẩm thất bại!');
+        const previousPage = req.get('Referer') || '/';
+        res.redirect(previousPage);
+    }
+}
+
+// [GET] /admin/products/create
+module.exports.create = async (req, res) => {
+    try {
+        res.render('admin/pages/product/create.pug', {
+            pageTitle: 'Thêm sản phẩm'
+        });
+    }
+    catch (error) {
+        req.flash('error', 'Cập nhật sản phẩm thất bại!');
+        const previousPage = req.get('Referer') || '/';
+        res.redirect(previousPage);
+    }
+}
+
+// [POST] /admin/products/create
+module.exports.activeCreate = async (req, res) => {
+    function splitObject(obj, splitKey) {
+        const obj1 = {};
+        const obj2 = {};
+        let foundSplit = false;
+
+        for (const key in obj) {
+            if (!foundSplit) {
+                obj1[key] = obj[key];
+                if (key === splitKey) {
+                    foundSplit = true;
+                }
+            } else {
+                obj2[key] = obj[key];
+            }
+        }
+
+        return { obj1, obj2 };
+    }
+
+    try {
+        const { obj1: product, obj2: productMethod } = splitObject(req.body, 'position')
+
+        product.price = parseInt(product.price) ? parseInt(product.price) : 0;
+        product.discountPercent = parseInt(product.discountPercent) ? parseInt(product.discountPercent) : 0;
+        product.quantity = parseInt(product.quantity) ? parseInt(product.quantity) : 0;
+
+        if (product.position == '') {
+            product.position = await productModel.countDocuments() + 1;
+            console.log(product.position)
+        } else {
+            product.position = parseInt(product.position) ? parseInt(product.position) : 1;
+        }
+
+        product.quantity = parseInt(product.quantity);
+
+        const newProduct = new productModel(product);
+        await newProduct.save();
+
+        if (newProduct) {
+            console.log()
+            const NewProductMethod = new productMethodModel(productMethod);
+            await NewProductMethod.save();
+            if (productMethod) {
+                newProduct.methodId = productMethod.id;
+                productModel.updateOne({ _id: newProduct.id }, newProduct)
+
+                req.flash('success', 'Tải lên sản phẩm thành công');
+                const previousPage = '/admin/products';
+                res.redirect(previousPage);
+            }
+            else {
+                console.log(1);
+                req.flash('success', 'Tải lên thuộc tính sản phẩm thất bại!');
+                const previousPage = '/admin/products';
+                res.redirect(previousPage);
+            }
+        } else {
+            console.log(2);
+            req.flash('success', 'Tải lên sản phẩm thành công');
+            const previousPage = '/admin/products';
+            res.redirect(previousPage);
+        }
+    }
+    catch (error) {
+        req.flash('error', 'Tải lên sản phẩm thất bại!');
         const previousPage = req.get('Referer') || '/';
         res.redirect(previousPage);
     }

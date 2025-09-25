@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const productSchema = new mongoose.Schema({
+    methodId: String,
     name: String,
     image: String,
     productCode: String,
@@ -10,7 +11,7 @@ const productSchema = new mongoose.Schema({
     status: {
         type: String,
         enum: ['active', 'inactive'],
-        default: 'active'
+        default: 'inactive'
     },
     position: Number,
     quantity: Number,

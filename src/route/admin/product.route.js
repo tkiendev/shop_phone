@@ -11,6 +11,7 @@ route.patch('/change-position/:id', productController.changePosition);
 
 route.patch('/change-multi', productController.changeMulti);
 
-
+route.get('/create', productController.create);
+route.post('/create', productController.activeCreate);
 
 module.exports = route;

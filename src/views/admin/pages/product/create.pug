@@ -1,0 +1,186 @@
+extends ../../layouts/default.pug
+ 
+block content 
+    .container.mt-5.pt-5
+        h2.text-center.mb-4.text-primary Thêm sản phẩm mới
+        .card.shadow
+            .card-body
+                form(action="/admin/products/create", method="POST" form-create)
+                    .form-row
+                        .form-group.col-md-6
+                            label(for="name") Tên sản phẩm
+                            input#name.form-control(type="text", name="name", required)
+
+                        .form-group.col-md-6
+                            label(for="productCode") Mã sản phẩm
+                            input#productCode.form-control(type="text", name="productCode", required)
+
+                    .form-group
+                        label(for="image") Hình ảnh
+                        input#image.form-control-file(type="file", name="image", accept="image/*")
+
+                    .form-group
+                        label(for="description") Mô tả
+                        textarea#description.form-control(name="description", rows="3")
+
+                    .form-row
+                        .form-group.col-md-4
+                            label(for="price") Giá
+                            input#price.form-control(type="number", name="price", step="0.01", required)
+
+                        .form-group.col-md-4
+                            label(for="discountPercent") Giảm giá (%)
+                            input#discountPercent.form-control(type="number", name="discountPercent", min="0", max="100")
+
+                        .form-group.col-md-4
+                            label(for="quantity") Số lượng
+                            input#quantity.form-control(type="number", name="quantity", min="0")
+
+                    .form-row
+                        .form-group.col-md-6
+                            label Trạng thái
+                                .form-check.form-check-inline.ml-2
+                                    input#active.form-check-input(type="radio", name="status", value="active", checked)
+                                    label.form-check-label(for="active") Hoạt động
+                                .form-check.form-check-inline.ml-2
+                                    input#inactive.form-check-input(type="radio", name="status", value="inactive")
+                                    label.form-check-label(for="inactive") Dừng hoạt động
+
+                        .form-group.col-md-6
+                            label(for="position") Vị trí hiển thị
+                            input#position.form-control(type="number", name="position", min="1")
+
+                    .card.shadow
+                        .card-body
+                            h5.text-secondary.mb-3 Cấu hình & Bộ nhớ ----------------------------------------------
+                            .form-row
+                                .form-group.col-md-6
+                                    label(for="os") Hệ điều hành
+                                    input#os.form-control(type="text", name="os", placeholder="Ví dụ: iOS 26")
+
+                                .form-group.col-md-6
+                                    label(for="cpu") Chip xử lý (CPU)
+                                    input#cpu.form-control(type="text", name="cpu", placeholder="Ví dụ: Apple A19 Pro 6 nhân")
+
+                            .form-row
+                                .form-group.col-md-6
+                                    label(for="cpuSpeed") Tốc độ CPU
+                                    input#cpuSpeed.form-control(type="text", name="cpuSpeed", placeholder="Ví dụ: 3.2 GHz")
+
+                                .form-group.col-md-6
+                                    label(for="gpu") Chip đồ họa (GPU)
+                                    input#gpu.form-control(type="text", name="gpu", placeholder="Ví dụ: Apple GPU 6 nhân")
+
+                            .form-row
+                                .form-group.col-md-6
+                                    label(for="ram") RAM
+                                    input#ram.form-control(type="text", name="ram", placeholder="Ví dụ: 12 GB")
+
+                                .form-group.col-md-6
+                                    label(for="storage") Dung lượng lưu trữ
+                                    input#storage.form-control(type="text", name="storage", placeholder="Ví dụ: 256 GB")
+
+                            .form-row
+                                .form-group.col-md-6
+                                    label(for="availableStorage") Dung lượng khả dụng
+                                    input#availableStorage.form-control(type="text", name="availableStorage", placeholder="Ví dụ: 241 GB")
+
+                                .form-group.col-md-6
+                                    label(for="contacts") Danh bạ
+                                    input#contacts.form-control(type="text", name="contacts", placeholder="Ví dụ: Không giới hạn")
+
+                            h5.text-secondary.mb-3 Pin và sạc ----------------------------------------------
+                            .form-row
+                                .form-group.col-md-6
+                                    label(for="batteryCapacity") Dung lượng pin
+                                    input#batteryCapacity.form-control(type="text", name="batteryCapacity", placeholder="Ví dụ: 4323 mAh")
+
+                                .form-group.col-md-6
+                                    label(for="batteryType") Loại pin
+                                    input#batteryType.form-control(type="text", name="batteryType", placeholder="Ví dụ: Li-Ion")
+                            .form-row
+                                .form-group.col-md-6
+                                    label(for="chargingSupport") Hỗ trợ sạc tối đa
+                                    input#chargingSupport.form-control(type="text", name="chargingSupport", placeholder="Ví dụ: 30W")
+
+                                .form-group.col-md-6
+                                    label(for="batteryTechnology") Công nghệ pin
+                                    input#batteryTechnology.form-control(type="text", name="batteryTechnology", placeholder="Ví dụ: Sạc nhanh, sạc không dây")
+                            
+                            h5.text-secondary.mb-3 Tiện ích ----------------------------------------------
+                            .form-row
+                                .form-group.col-md-6
+                                    label(for="security") Bảo mật nâng cao
+                                    input#security.form-control(type="text", name="security", placeholder="Ví dụ: Face ID")
+
+                                .form-group.col-md-6
+                                    label(for="waterResistance") Kháng nước, bụi
+                                    input#waterResistance.form-control(type="text", name="waterResistance", placeholder="Ví dụ: IP68")
+                            .form-row
+                                .form-group.col-md-6
+                                    label(for="recording") Ghi âm
+                                    input#recording.form-control(type="text", name="recording", placeholder="Ví dụ: Có")
+
+                                .form-group.col-md-6
+                                    label(for="music") Nghe nhạc
+                                    input#music.form-control(type="text", name="music", placeholder="Ví dụ: Có")
+                            
+                            h5.text-secondary.mb-3 Kết nối ----------------------------------------------
+                            .form-row
+                                .form-group.col-md-6
+                                    label(for="mobileNetwork") Mạng di động
+                                    input#mobileNetwork.form-control(type="text", name="mobileNetwork", placeholder="Ví dụ: 5G")
+
+                                .form-group.col-md-6
+                                    label(for="sim") SIM
+                                    input#sim.form-control(type="text", name="sim", placeholder="Ví dụ: 2 SIM (nano + eSIM)")
+                            .form-row
+                                .form-group.col-md-6
+                                    label(for="wifi") Wifi
+                                    input#wifi.form-control(type="text", name="wifi", placeholder="Ví dụ: Wi-Fi 6E")
+
+                                .form-group.col-md-6
+                                    label(for="gps") GPS
+                                    input#gps.form-control(type="text", name="gps", placeholder="Ví dụ: Có")
+                            .form-row
+                                .form-group.col-md-6
+                                    label(for="bluetooth") Bluetooth
+                                    input#bluetooth.form-control(type="text", name="bluetooth", placeholder="Ví dụ: 5.3")
+
+                                .form-group.col-md-6
+                                    label(for="port") Cổng kết nối/sạc
+                                    input#port.form-control(type="text", name="port", placeholder="Ví dụ: USB-C")
+                            .form-row
+                                .form-group.col-md-6
+                                    label(for="headphoneJack") Jack tai nghe
+                                    input#headphoneJack.form-control(type="text", name="headphoneJack", placeholder="Ví dụ: Không có")
+
+                                .form-group.col-md-6
+                                    label(for="otherConnections") Kết nối khác
+                                    input#otherConnections.form-control(type="text", name="otherConnections", placeholder="Ví dụ: NFC")
+
+                            h5.text-secondary.mb-3 Thiết kế & chất liệu ----------------------------------------------
+                            .form-row
+                                .form-group.col-md-6
+                                    label(for="design") Thiết kế
+                                    input#design.form-control(type="text", name="design", placeholder="Ví dụ: Nguyên khối")
+
+                                .form-group.col-md-6
+                                    label(for="material") Chất liệu
+                                    input#material.form-control(type="text", name="material", placeholder="Ví dụ: Titan")
+                            .form-row
+                                .form-group.col-md-6
+                                    label(for="dimensions") Kích thước, khối lượng
+                                    input#dimensions.form-control(type="text", name="dimensions", placeholder="Ví dụ: 159 x 76.7 x 8.25 mm, 221g")
+
+                                .form-group.col-md-6
+                                    label(for="launchDate") Thời điểm ra mắt
+                                    input#launchDate.form-control(type="text", name="launchDate", placeholder="Ví dụ: 09/2025")
+                            .form-row
+                                .form-group.col-md-6
+                                    label(for="brand") Hãng
+                                    input#brand.form-control(type="text", name="brand", placeholder="Ví dụ: Apple")
+                            
+        button.btn.btn-success.btn-block.mt-4(type="button" btn-create) ➕ Thêm sản phẩm
+
+        script(src="/public/admin/scripts/create.products.js") 
