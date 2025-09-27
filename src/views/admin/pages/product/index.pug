@@ -76,7 +76,7 @@ block content
                                         td
                                             input(type="checkbox", name="selected", value=product.id)
                                         td
-                                            img(src=product.image, alt=product.name, style="width: 60px; height: 60px; object-fit: cover; border-radius: 4px;")
+                                            img(src=product.images[0], alt=product.name, style="width: 60px; height: 60px; object-fit: cover; border-radius: 4px;")
                                         td #{product.name}
                                         td Danh mục
                                         td #{product.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}

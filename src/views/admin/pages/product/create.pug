@@ -5,7 +5,7 @@ block content
         h2.text-center.mb-4.text-primary Thêm sản phẩm mới
         .card.shadow
             .card-body
-                form(action="/admin/products/create", method="POST" form-create)
+                form(action="/admin/products/create", method="POST", form-create, enctype="multipart/form-data")
                     .form-row
                         .form-group.col-md-6
                             label(for="name") Tên sản phẩm
@@ -17,7 +17,7 @@ block content
 
                     .form-group
                         label(for="image") Hình ảnh
-                        input#image.form-control-file(type="file", name="image", accept="image/*")
+                        input#image.form-control-file(type="file", name="image", accept="image/*", multiple)
 
                     .form-group
                         label(for="description") Mô tả

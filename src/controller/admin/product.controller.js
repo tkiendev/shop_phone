@@ -2,6 +2,8 @@ const productModel = require('../../models/product.model');
 const productMethodModel = require('../../models/productMethod.model');
 
 const searchHelper = require('../../helpers/search');
+const splitObjectHelper = require('../../helpers/splitObject');
+
 
 // [GET] /admin/products
 module.exports.index = async (req, res) => {
@@ -218,27 +220,10 @@ module.exports.create = async (req, res) => {
 
 // [POST] /admin/products/create
 module.exports.activeCreate = async (req, res) => {
-    function splitObject(obj, splitKey) {
-        const obj1 = {};
-        const obj2 = {};
-        let foundSplit = false;
-
-        for (const key in obj) {
-            if (!foundSplit) {
-                obj1[key] = obj[key];
-                if (key === splitKey) {
-                    foundSplit = true;
-                }
-            } else {
-                obj2[key] = obj[key];
-            }
-        }
-
-        return { obj1, obj2 };
-    }
 
     try {
-        const { obj1: product, obj2: productMethod } = splitObject(req.body, 'position')
+
+        const { obj1: product, obj2: productMethod } = splitObjectHelper(req.body, 'position');
 
         product.price = parseInt(product.price) ? parseInt(product.price) : 0;
         product.discountPercent = parseInt(product.discountPercent) ? parseInt(product.discountPercent) : 0;
@@ -246,36 +231,39 @@ module.exports.activeCreate = async (req, res) => {
 
         if (product.position == '') {
             product.position = await productModel.countDocuments() + 1;
-            console.log(product.position)
         } else {
             product.position = parseInt(product.position) ? parseInt(product.position) : 1;
         }
 
-        product.quantity = parseInt(product.quantity);
+        if (req.linkImg.length == 0) {
+            req.flash('warning', 'Vui lòng thêm ảnh');
+            const previousPage = '/admin/products';
+            res.redirect(previousPage);
+            return;
+        }
+        product.images = req.linkImg;
+
 
         const newProduct = new productModel(product);
         await newProduct.save();
 
         if (newProduct) {
-            console.log()
             const NewProductMethod = new productMethodModel(productMethod);
             await NewProductMethod.save();
             if (productMethod) {
                 newProduct.methodId = productMethod.id;
-                productModel.updateOne({ _id: newProduct.id }, newProduct)
+                await productModel.updateOne({ _id: newProduct.id }, newProduct)
 
                 req.flash('success', 'Tải lên sản phẩm thành công');
                 const previousPage = '/admin/products';
                 res.redirect(previousPage);
             }
             else {
-                console.log(1);
                 req.flash('success', 'Tải lên thuộc tính sản phẩm thất bại!');
                 const previousPage = '/admin/products';
                 res.redirect(previousPage);
             }
         } else {
-            console.log(2);
             req.flash('success', 'Tải lên sản phẩm thành công');
             const previousPage = '/admin/products';
             res.redirect(previousPage);
