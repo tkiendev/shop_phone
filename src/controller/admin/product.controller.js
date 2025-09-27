@@ -208,7 +208,8 @@ module.exports.changeMulti = async (req, res) => {
 module.exports.create = async (req, res) => {
     try {
         res.render('admin/pages/product/create.pug', {
-            pageTitle: 'Thêm sản phẩm'
+            pageTitle: 'Thêm sản phẩm',
+            lickReload: '/admin/products/create'
         });
     }
     catch (error) {
@@ -220,7 +221,6 @@ module.exports.create = async (req, res) => {
 
 // [POST] /admin/products/create
 module.exports.activeCreate = async (req, res) => {
-
     try {
 
         const { obj1: product, obj2: productMethod } = splitObjectHelper(req.body, 'position');
@@ -243,28 +243,25 @@ module.exports.activeCreate = async (req, res) => {
         }
         product.images = req.linkImg;
 
+        const NewProductMethod = new productMethodModel(productMethod);
+        await NewProductMethod.save();
+        if (NewProductMethod) {
+            product.methodId = NewProductMethod.id;
+            const newProduct = new productModel(product);
+            await newProduct.save();
 
-        const newProduct = new productModel(product);
-        await newProduct.save();
-
-        if (newProduct) {
-            const NewProductMethod = new productMethodModel(productMethod);
-            await NewProductMethod.save();
-            if (productMethod) {
-                newProduct.methodId = productMethod.id;
-                await productModel.updateOne({ _id: newProduct.id }, newProduct)
-
+            if (newProduct) {
                 req.flash('success', 'Tải lên sản phẩm thành công');
                 const previousPage = '/admin/products';
                 res.redirect(previousPage);
             }
             else {
-                req.flash('success', 'Tải lên thuộc tính sản phẩm thất bại!');
+                req.flash('error', 'Tạo sản phẩm thất bại');
                 const previousPage = '/admin/products';
                 res.redirect(previousPage);
             }
         } else {
-            req.flash('success', 'Tải lên sản phẩm thành công');
+            req.flash('error', 'Tạo thuộc tính sản phẩm thất bại');
             const previousPage = '/admin/products';
             res.redirect(previousPage);
         }
@@ -272,6 +269,31 @@ module.exports.activeCreate = async (req, res) => {
     catch (error) {
         req.flash('error', 'Tải lên sản phẩm thất bại!');
         const previousPage = req.get('Referer') || '/';
+        res.redirect(previousPage);
+    }
+}
+
+// [GET] /admin/prducts/detail/:id
+module.exports.detail = async (req, res) => {
+    try {
+        const product = await productModel.findOne({ _id: req.params.id });
+        const productMethod = await productMethodModel.findOne({ _id: product.methodId });
+        if (product) {
+            res.render('admin/pages/product/detail.pug', {
+                pageTitle: product.name,
+                product: product,
+                productMethod: productMethod,
+                lickReload: `/admin/products/detail/${product.id}`
+            })
+        } else {
+            req.flash('warning', 'Không tìm thấy sản phẩm trang hệ thống');
+            const previousPage = '/admin/products';
+            res.redirect(previousPage);
+        }
+
+    } catch (error) {
+        req.flash('error', 'Tải lên sản phẩm thất bại!');
+        const previousPage = '/admin/products';
         res.redirect(previousPage);
     }
 }

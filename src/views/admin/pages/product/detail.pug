@@ -1,0 +1,186 @@
+extends ../../layouts/default.pug
+ 
+
+block content
+  link(rel="stylesheet", href="/public/admin/styles/detail-product.css")
+  .container.mt-5
+    h2.text-center.mb-5 Chi tiết sản phẩm: #{product.name}
+
+    .row
+      .col-md-6
+        .card.shadow-sm
+          .card-body
+            h5.text-primary.text-center #{product.name}
+            img#mainImage(src=product.images[0], alt="Ảnh chính", class="img-fluid rounded mb-3 w-100")
+
+            .d-flex.flex-wrap.justify-content-center
+              each image, index in product.images
+                img.thumbnail(
+                  src=image,
+                  alt="Ảnh phụ " + index,
+                  class="img-thumbnail m-1",
+                  style="width: 80px; height: 80px; cursor: pointer;",
+                  data-src=image,
+                  title="Click để xem"
+                )
+
+      .col-md-6
+        .card.shadow-sm
+          .card-body
+            h5 Thông tin sản phẩm
+            ul.list-group.list-group-flush
+              li.list-group-item
+                strong Mã sản phẩm: 
+                | #{product.productCode}
+              li.list-group-item
+                strong Trạng thái: 
+                if product.status === 'active'
+                  span.badge.badge-success.ml-2 Active
+                else
+                  span.badge.badge-secondary.ml-2 Inactive
+              li.list-group-item
+                strong Vị trí hiển thị: 
+                | #{product.position}
+              li.list-group-item
+                strong Tồn kho: 
+                | #{product.quantity}
+              li.list-group-item
+                strong Đã xóa: 
+                if product.deleted
+                  span.text-danger.ml-2 Có
+                else
+                  span.text-success.ml-2 Không
+              li.list-group-item
+                - if (product.createdAt)
+                    strong Ngày tạo: 
+                    |  #{product.createdAt.toLocaleString()}
+              li.list-group-item
+                - if (product.updatedAt) 
+                    strong Ngày cập nhật: 
+                    | #{product.updatedAt.toLocaleString()}
+
+            hr
+            h5 Giá gốc: #{product.price}₫
+            if product.discountPercent > 0
+              h5.text-danger Giảm giá: #{product.discountPercent}%
+              h5.text-success Giá sau giảm: #{product.price - (product.price * product.discountPercent / 100)}₫
+
+            .mt-4.text-center
+              a.btn.btn-outline-warning(href=`/admin/products/edit/${product._id}`)  Chỉnh sửa
+              button.btn.btn-outline-danger.ml-2(onclick=`confirmDelete('${product._id}')`)  Xóa
+
+    //- MÔ TẢ & THÔNG SỐ KỸ THUẬT - CHUYỂN ĐỔI BẰNG NÚT
+    .card.shadow-sm.mt-4
+      .card-body
+        h5.text-muted.mb-3 Thông tin chi tiết sản phẩm
+
+        .btn-group.mb-3
+          button.btn.btn-outline-primary(
+            type="button",
+            data-toggle="collapse",
+            data-target="#description",
+            aria-expanded="false",
+            aria-controls="description",
+            onclick="hideOthers('description')"
+          ) 📝 Mô tả sản phẩm
+          button.btn.btn-outline-secondary(
+            type="button",
+            data-toggle="collapse",
+            data-target="#specs",
+            aria-expanded="false",
+            aria-controls="specs",
+            onclick="hideOthers('specs')"
+          ) ⚙️ Thông số kỹ thuật
+
+        //- MÔ TẢ
+        #description.collapse
+          h6.text-uppercase.text-primary.mb-2 Mô tả sản phẩm
+          p #{product.description}
+
+        //- THÔNG SỐ KỸ THUẬT
+        -if (productMethod)
+            #specs.collapse
+            h6.text-uppercase.text-primary.mt-4.mb-2 Phần cứng & hiệu năng
+            ul.list-group.list-group-flush.mb-3
+                li.list-group-item
+                strong Hệ điều hành: 
+                | #{productMethod.os}
+                li.list-group-item
+                strong Chipset: 
+                | #{productMethod.chipset}
+                li.list-group-item
+                strong GPU: 
+                | #{productMethod.gpu}
+                li.list-group-item
+                strong RAM: 
+                | #{productMethod.ram}
+                li.list-group-item
+                strong Bộ nhớ trong: 
+                | #{productMethod.storage}
+                li.list-group-item
+                strong Bộ nhớ khả dụng: 
+                | #{productMethod.availableStorage}
+
+            h6.text-uppercase.text-primary.mb-2 Camera & Pin
+            ul.list-group.list-group-flush.mb-3
+                li.list-group-item
+                strong Camera: 
+                | #{productMethod.camera}
+                li.list-group-item
+                strong Loại pin: 
+                | #{productMethod.batteryType}
+                li.list-group-item
+                strong Dung lượng pin: 
+                | #{productMethod.batteryCapacity}
+                li.list-group-item
+                strong Hỗ trợ sạc: 
+                | #{productMethod.chargingSupport}
+                li.list-group-item
+                strong Chế độ tiết kiệm pin: 
+                | #{productMethod.batterySaving}
+
+            h6.text-uppercase.text-primary.mb-2 Kết nối & mạng
+            ul.list-group.list-group-flush.mb-3
+                li.list-group-item
+                strong Mạng di động: 
+                | #{productMethod.mobileNetwork}
+                li.list-group-item
+                strong Wi-Fi: 
+                | #{productMethod.wifi}
+                li.list-group-item
+                strong Bluetooth: 
+                | #{productMethod.bluetooth}
+                li.list-group-item
+                strong Jack tai nghe: 
+                | #{productMethod.headphoneJack}
+                li.list-group-item
+                strong Kết nối khác: 
+                | #{productMethod.otherConnections}
+
+            h6.text-uppercase.text-primary.mb-2 Tính năng & bảo mật
+            ul.list-group.list-group-flush.mb-3
+                li.list-group-item
+                strong Bảo mật: 
+                | #{productMethod.security}
+                li.list-group-item
+                strong Kháng nước: 
+                | #{productMethod.waterResistance}
+                li.list-group-item
+                strong Ghi âm: 
+                | #{productMethod.recording}
+                li.list-group-item
+                strong Nhạc hỗ trợ: 
+                | #{productMethod.music}
+
+            h6.text-uppercase.text-primary.mb-2 Thông tin khác
+            ul.list-group.list-group-flush
+                li.list-group-item
+                strong Thương hiệu: 
+                | #{productMethod.brand}
+                li.list-group-item
+                strong Kích thước: 
+                | #{productMethod.dimensions}
+                li.list-group-item
+                strong Ngày ra mắt: 
+                | #{productMethod.launchDate}
+    script(src="/public/admin/scripts/detail-prodcut.js") 

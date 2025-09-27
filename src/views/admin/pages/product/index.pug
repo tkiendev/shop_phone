@@ -91,7 +91,7 @@ block content
                                             form(action=`/admin/products/change-position/${product.id}`, method="POST", class="d-inline-block", change-position)
                                                 input(type="number", name="position", value=product.position, min="0", class="form-control position-input", style="width: 70px; margin: 0 auto;")
                                         td
-                                            button.btn.btn-sm.btn-info.mt-1(type="detail") Xem
+                                            a.btn.btn-sm.btn-info.mt-1(type="detail", href=`/admin/products/detail/${product.id}`) Xem
                                             button.btn.btn-sm.btn-warning.mt-1(type="edit") Sửa
                                             button.btn.btn-sm.btn-danger.mt-1(type="delete") Xóa
 

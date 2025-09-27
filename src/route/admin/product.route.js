@@ -18,4 +18,7 @@ route.patch('/change-multi', productController.changeMulti);
 route.get('/create', productController.create);
 route.post('/create', upload.array('image', 10), uploadCloudinary, productController.activeCreate);
 
+route.get('/detail/:id', productController.detail);
+
+
 module.exports = route;
