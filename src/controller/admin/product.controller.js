@@ -385,3 +385,93 @@ module.exports.actionEdit = async (req, res) => {
         res.redirect(previousPage);
     }
 }
+
+// [GET] /admin/products/recycle-bin
+module.exports.recycleBin = async (req, res) => {
+    try {
+        const query = req.query;
+        let sort = {
+            position: 'asc'
+        }
+        if (query.sortName && query.sortType) {
+            sort = { [query.sortName]: query.sortType === 'asc' ? 'asc' : 'desc' };
+        }
+        const find = {
+            deleted: true
+        };
+
+        // Search by name
+        const keyword = searchHelper(query.keyword);
+        if (keyword) {
+            find.name = keyword;
+        }
+
+        // filter by status
+        if (query.status) {
+            find.status = query.status;
+        }
+
+        // pagination
+        let pagination = {}
+        if (query.page || query.limit) {
+            pagination = {
+                page: query.page ? parseInt(query.page) : 1,
+                limit: query.limit ? parseInt(query.limit) : 4
+            }
+        } else {
+            pagination = {
+                page: 1,
+                limit: 4
+            }
+        }
+
+        const countDocuments = await productModel.countDocuments({ deleted: true });
+        const lengthPage = Math.floor(countDocuments / pagination.limit);
+
+        // Take out the products
+        const products = await productModel.find(find).sort(sort).skip((pagination.page - 1) * 4).limit(pagination.limit);
+
+        if (products.length === 0) {
+            req.flash('warning', 'Không có sản phẩm nào trong hệ thống!');
+        }
+
+        res.render('admin/pages/product/recycle-bin.pug', {
+            pageTitle: 'Thùng rác',
+            lickReload: '/admin/products/recycle-bin',
+            activeProduct: true,
+            products: products,
+            keywordSearch: keyword ? query.keyword : '',
+            status: query.status || '',
+            lengthPage: lengthPage,
+            currentPage: pagination.page
+        });
+    } catch (error) {
+        req.flash('error', 'Không thể load trang!');
+        res.redirect('/admin/dashboard');
+    }
+}
+
+// [PATCH] /admin/products/restore/:id
+module.exports.restore = async (req, res) => {
+    try {
+        const productId = req.params.id;
+        const product = await productModel.findOne({ _id: productId });
+        if (product) {
+            await productModel.updateOne(
+                { _id: productId },
+                { deleted: false }
+            );
+            req.flash('success', 'Khôi phục sản phẩm thành công!');
+            const previousPage = req.get('Referer') || '/';
+            res.redirect(previousPage);
+        } else {
+            req.flash('warning', 'Không tìm thấy sản phẩm!');
+            const previousPage = req.get('Referer') || '/';
+            res.redirect(previousPage);
+        }
+    } catch (error) {
+        req.flash('error', 'Khôi phục sản phẩm thất bại!');
+        const previousPage = req.get('Referer') || '/';
+        res.redirect(previousPage);
+    }
+}

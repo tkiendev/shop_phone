@@ -42,6 +42,27 @@ if (formDelete) {
     });
 }
 
+// restore product
+const formRestore = document.querySelector('form[form-restore]');
+if (formRestore) {
+    const productRows = document.querySelectorAll('tr[id]');
+    productRows.forEach(row => {
+        const restoreBtn = row.querySelector('button[type="restore"]');
+        if (restoreBtn) {
+            restoreBtn.addEventListener('click', (event) => {
+                event.preventDefault();
+
+                const checkrestore = confirm('Bạn có chắc chắn muốn Khôi phục sản phẩm này?');
+                if (!checkrestore) return;
+
+                const productId = row.getAttribute('id');
+                formRestore.action = `${formRestore.action}/restore/${productId}?_method=PATCH`;
+                formRestore.submit();
+            });
+        }
+    });
+}
+
 // change position
 const formPosition = document.querySelectorAll('form[change-position]');
 if (formPosition) {

@@ -8,6 +8,10 @@ const upload = multer({ storage: multer.memoryStorage() });
 const uploadCloudinary = require('../../helpers/upload-cloudinary.js');
 
 route.get('/', productController.index);
+
+route.get('/recycle-bin', productController.recycleBin);
+route.patch('/restore/:id', productController.restore);
+
 route.patch('/change-status/:id/:status', productController.changeStatus);
 
 route.delete('/delete/:id', productController.delete);

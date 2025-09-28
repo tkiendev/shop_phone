@@ -2,26 +2,10 @@ extends ../../layouts/default.pug
 
 block content
     .container-fluid.mt-5
-        h2.mb-4 Quản lý sản phẩm
+        h2.mb-4 Thùng rác
 
         // BỘ LỌC
         .card.mb-4.shadow-sm
-            .card-body
-                .row
-                    .col-md-6
-                        form.form-inline(action="/admin/products/change-multi?_method=PATCH", method="POST", change-multi)
-                            input.d-none(type="text", name="ids")
-                            select.form-control.mr-2#change-multi(style="text-align: center;" name ="action")
-                                option(value="") -- Thay đổi nhanh --
-                                option(value="change-delete") Xóa nhiều sản phẩm
-                                option(value="change-position") Thay đổi vị trí nhiều sản phẩm
-                                option(value="change-active") Thay đổi trạng thái hoạt động
-                                option(value="change-inactive") Thay đổi trạng thái dừng hoạt động
-                            button.btn.btn-primary(type="submit", id="filterBtn") Thay đổi
-                    .col-md-6.text-right
-                            a.btn.btn-outline-success#addProductBtn(href='/admin/products/create') Thêm sản phẩm
-                            a.btn.btn-outline-danger#trashProductBtn(href='/admin/products/recycle-bin') Thùng rác
-
         .card.shadow-sm
             .card-header
                 h5.mb-2(style="text-align: center;") Danh sách sản phẩm
@@ -82,18 +66,15 @@ block content
                                         td #{product.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
                                         td #{product.discountPercent}%
                                         td #{product.quantity}
-                                        td( status=product.status , style="cursor: pointer;" )
+                                        td()
                                             if product.status == 'active'
                                                 span.badge.badge-success Hoạt động
                                             else if product.status == 'inactive'
                                                 span.badge.badge-danger Ngừng hoạt động
-                                        td 
-                                            form(action=`/admin/products/change-position/${product.id}`, method="POST", class="d-inline-block", change-position)
-                                                input(type="number", name="position", value=product.position, min="0", class="form-control position-input", style="width: 70px; margin: 0 auto;")
+                                        td #{product.position}
                                         td
                                             a.btn.btn-sm.btn-info.mt-1(type="detail", href=`/admin/products/detail/${product.id}`) Xem
-                                            a.btn.btn-sm.btn-warning.mt-1(type="edit", href=`/admin/products/edit/${product.id}`) Sửa
-                                            button.btn.btn-sm.btn-danger.mt-1(type="delete") Xóa
+                                            button.btn.btn-sm.btn-danger.mt-1(type="restore") Khôi phục
 
 
         nav.mt-4
@@ -109,5 +90,6 @@ block content
 
     form(action="/admin/change-status", method="POST" , form-change-status class="d-none")
     form(action="/admin/products", method="POST" , form-delete class="d-none")
+    form(action="/admin/products", method="POST" , form-restore class="d-none")
     
     script(type="module", src="/public/admin/scripts/product.js") 
