@@ -32,15 +32,7 @@ waitForjQuery(function () {
                 fetch(`/admin/products/delete/${id}`, {
                     method: 'DELETE'
                 })
-                    .then(res => res.json())
-                    .then(data => {
-                        alert(data.message || 'Đã xóa sản phẩm');
-                        window.location.href = '/admin/products';
-                    })
-                    .catch(err => {
-                        alert('Lỗi khi xóa sản phẩm');
-                        console.error(err);
-                    });
+                window.location.href = `/admin/products`;
             }
         };
     });
