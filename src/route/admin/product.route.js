@@ -20,5 +20,10 @@ route.post('/create', upload.array('image', 10), uploadCloudinary, productContro
 
 route.get('/detail/:id', productController.detail);
 
+route.get('/edit/:id', productController.edit);
+route.patch('/edit/:id', upload.array('image', 10), uploadCloudinary, productController.actionEdit);
+
+
+
 
 module.exports = route;

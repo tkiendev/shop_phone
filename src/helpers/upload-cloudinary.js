@@ -9,26 +9,28 @@ const { Readable } = require('stream');
 module.exports = async (req, res, next) => {
     // upload files
     const arrayLinkFile = [];
-    for (img of req.files) {
+    if (req.files.length > 0) {
+        for (img of req.files) {
 
-        if (!img || !img.buffer) {
-            req.flash('error', 'Thiếu hình ảnh');
-            const previousPage = '/admin/products';
-            res.redirect(previousPage);
-            return;
+            if (!img || !img.buffer) {
+                req.flash('error', 'Thiếu hình ảnh');
+                const previousPage = '/admin/products';
+                res.redirect(previousPage);
+                return;
+            }
+            const buffer = img.buffer;
+            const uploadResult = await new Promise((resolve, reject) => {
+                const stream = cloudinary.uploader.upload_stream(
+                    (error, result) => {
+                        if (error) return reject(error);
+                        resolve(result);
+                    }
+                );
+                Readable.from(buffer).pipe(stream);
+            });
+
+            arrayLinkFile.push(uploadResult.secure_url)
         }
-        const buffer = img.buffer;
-        const uploadResult = await new Promise((resolve, reject) => {
-            const stream = cloudinary.uploader.upload_stream(
-                (error, result) => {
-                    if (error) return reject(error);
-                    resolve(result);
-                }
-            );
-            Readable.from(buffer).pipe(stream);
-        });
-
-        arrayLinkFile.push(uploadResult.secure_url)
     }
     req.linkImg = arrayLinkFile;
     next();

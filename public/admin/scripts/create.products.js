@@ -6,9 +6,5 @@ if (btnCreate) {
         if (formCreate) {
             formCreate.submit();
         }
-        const formCreateMethod = document.querySelector('from[form-create-method]');
-        if (formCreateMethod) {
-            formCreateMethod.submit();
-        }
     });
 }

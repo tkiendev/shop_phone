@@ -297,3 +297,91 @@ module.exports.detail = async (req, res) => {
         res.redirect(previousPage);
     }
 }
+
+// [GET] /admin/products/edit/:id
+module.exports.edit = async (req, res) => {
+    try {
+        const product = await productModel.findOne({ _id: req.params.id });
+        let productMethod = {};
+        if (product.methodId) {
+            productMethod = await productMethodModel.findOne({ _id: product.methodId });
+        }
+        if (product) {
+            res.render('admin/pages/product/edit', {
+                pageTitle: 'Chỉnh sửa sản phẩm',
+                lickReload: `/admin/products/edit/${product.id}`,
+                product: product,
+                productMethod: productMethod
+            });
+        } else {
+            req.flash('warning', 'Không tìm thấy sản phẩm!');
+            const previousPage = '/admin/products';
+            res.redirect(previousPage);
+        }
+    }
+    catch (error) {
+        console.log(error);
+        req.flash('error', 'Tải lên sản phẩm thất bại!');
+        const previousPage = '/admin/products';
+        res.redirect(previousPage);
+    }
+}
+
+// [POST] /admin/products/edit/:id
+module.exports.actionEdit = async (req, res) => {
+    try {
+        const { obj1: product, obj2: productMethod } = splitObjectHelper(req.body, 'position');
+        const editProduct = await productModel.findOne({ _id: req.params.id });
+        if (!editProduct) {
+            req.flash('warning', 'Không tìm thấy sản phẩm');
+            const previousPage = req.get('Referer') || '/';
+            res.redirect(previousPage);
+            return;
+        } else {
+            const editProductMethod = await productMethodModel.findOne({ _id: editProduct.methodId });
+            if (editProductMethod) {
+                await productModel.updateOne({ _id: req.params.id }, {
+                    $set: {
+                        ...product,
+                        images: req.linkImg,
+                    }
+                });
+                await productMethodModel.updateOne({ _id: editProduct.methodId }, productMethod);
+
+                req.flash('success', 'Cập nhật sản phẩm thành công');
+                const previousPage = req.get('Referer') || '/';
+                res.redirect(previousPage);
+                return;
+            } else {
+                const newProductMethod = new productMethodModel(productMethod);
+                newProductMethod.save();
+
+                if (newProductMethod) {
+                    await productModel.updateOne({ _id: req.params.id }, {
+                        $set: {
+                            ...product,
+                            images: req.linkImg,
+                            methodId: newProductMethod.id
+                        }
+                    });
+
+                    req.flash('success', 'Cập nhật sản phẩm thành công');
+                    const previousPage = req.get('Referer') || '/';
+                    res.redirect(previousPage);
+                    return;
+                } else {
+                    req.flash('error', 'Tải lên sản phẩm thất bại!');
+                    const previousPage = req.get('Referer') || '/';
+                    res.redirect(previousPage);
+                    return;
+                }
+            }
+        }
+
+    }
+    catch (error) {
+        req.flash('error', 'Tải lên sản phẩm thất bại!');
+        const previousPage = req.get('Referer') || '/';
+        res.redirect(previousPage);
+    }
+}

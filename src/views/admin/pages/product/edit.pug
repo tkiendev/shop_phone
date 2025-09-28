@@ -1,0 +1,186 @@
+extends ../../layouts/default.pug
+ 
+block content 
+    .container.mt-5.pt-5
+        h2.text-center.mb-4.text-primary #{product.name}
+        .card.shadow
+            .card-body
+                form(action=`/admin/products/edit/${product.id}?_method=PATCH`, method="POST", form-create, enctype="multipart/form-data")
+                    .form-row
+                        .form-group.col-md-6
+                            label(for="name") Tên sản phẩm
+                            input#name.form-control(type="text", name="name", required, value = product.name)
+
+                        .form-group.col-md-6
+                            label(for="productCode") Mã sản phẩm
+                            input#productCode.form-control(type="text", name="productCode", required, value = product.productCode)
+
+                    .form-group
+                        label(for="image") Hình ảnh
+                        input#image.form-control-file(type="file", name="image", accept="image/*", multiple)
+
+                    .form-group
+                        label(for="description") Mô tả
+                        textarea#description.form-control(name="description", rows="3") #{product.description}
+
+                    .form-row
+                        .form-group.col-md-4
+                            label(for="price") Giá
+                            input#price.form-control(type="number", name="price", step="0.01", required, value = product.price)
+
+                        .form-group.col-md-4
+                            label(for="discountPercent") Giảm giá (%)
+                            input#discountPercent.form-control(type="number", name="discountPercent", min="0", max="100", value = product.discountPercent)
+
+                        .form-group.col-md-4
+                            label(for="quantity") Số lượng
+                            input#quantity.form-control(type="number", name="quantity", min="0", value = product.quantity)
+
+                    .form-row
+                        .form-group.col-md-6
+                            label Trạng thái
+                                .form-check.form-check-inline.ml-2
+                                    input#active.form-check-input(type="radio", name="status", value="active", checked)
+                                    label.form-check-label(for="active" checked=(product.status == 'active' ? true : false)) Hoạt động
+                                .form-check.form-check-inline.ml-2
+                                    input#inactive.form-check-input(type="radio", name="status", value="inactive")
+                                    label.form-check-label(for="inactive" checked=(product.status == 'inactive' ? true : false)) Dừng hoạt động
+
+                        .form-group.col-md-6
+                            label(for="position") Vị trí hiển thị
+                            input#position.form-control(type="number", name="position", min="1", value = product.position)
+
+                    .card.shadow
+                        .card-body
+                            h5.text-secondary.mb-3 Cấu hình & Bộ nhớ ----------------------------------------------
+                            .form-row
+                                .form-group.col-md-6
+                                    label(for="os") Hệ điều hành
+                                    input#os.form-control(type="text", name="os", value=productMethod.os)
+
+                                .form-group.col-md-6
+                                    label(for="cpu") Chip xử lý (CPU)
+                                    input#cpu.form-control(type="text", name="cpu", value = productMethod.cpu)
+
+                            .form-row
+                                .form-group.col-md-6
+                                    label(for="cpuSpeed") Tốc độ CPU
+                                    input#cpuSpeed.form-control(type="text", name="cpuSpeed", value = productMethod.cpuSpeed)
+
+                                .form-group.col-md-6
+                                    label(for="gpu") Chip đồ họa (GPU)
+                                    input#gpu.form-control(type="text", name="gpu", value = productMethod.gpu)
+
+                            .form-row
+                                .form-group.col-md-6
+                                    label(for="ram") RAM
+                                    input#ram.form-control(type="number", name="ram", value = productMethod.ram)
+
+                                .form-group.col-md-6
+                                    label(for="storage") Dung lượng lưu trữ
+                                    input#storage.form-control(type="number", name="storage", value = productMethod.storage)
+
+                            .form-row
+                                .form-group.col-md-6
+                                    label(for="availableStorage") Dung lượng khả dụng
+                                    input#availableStorage.form-control(type="number", name="availableStorage", value = productMethod.availableStorage)
+
+                                .form-group.col-md-6
+                                    label(for="contacts") Danh bạ
+                                    input#contacts.form-control(type="text", name="contacts", value = productMethod.contacts)
+
+                            h5.text-secondary.mb-3 Pin và sạc ----------------------------------------------
+                            .form-row
+                                .form-group.col-md-6
+                                    label(for="batteryCapacity") Dung lượng pin
+                                    input#batteryCapacity.form-control(type="number", name="batteryCapacity", value = productMethod.batteryCapacity)
+
+                                .form-group.col-md-6
+                                    label(for="batteryType") Loại pin
+                                    input#batteryType.form-control(type="text", name="batteryType", value = productMethod.batteryType)
+                            .form-row
+                                .form-group.col-md-6
+                                    label(for="chargingSupport") Hỗ trợ sạc tối đa
+                                    input#chargingSupport.form-control(type="number", name="chargingSupport", value = productMethod.chargingSupport)
+
+                                .form-group.col-md-6
+                                    label(for="batteryTechnology") Công nghệ pin
+                                    input#batteryTechnology.form-control(type="text", name="batteryTechnology", value = productMethod.batteryTechnology)
+                            
+                            h5.text-secondary.mb-3 Tiện ích ----------------------------------------------
+                            .form-row
+                                .form-group.col-md-6
+                                    label(for="security") Bảo mật nâng cao
+                                    input#security.form-control(type="text", name="security", value = productMethod.security)
+
+                                .form-group.col-md-6
+                                    label(for="waterResistance") Kháng nước, bụi
+                                    input#waterResistance.form-control(type="text", name="waterResistance", value = productMethod.waterResistance)
+                            .form-row
+                                .form-group.col-md-6
+                                    label(for="recording") Ghi âm
+                                    input#recording.form-control(type="text", name="recording", value = productMethod.recording)
+
+                                .form-group.col-md-6
+                                    label(for="music") Nghe nhạc
+                                    input#music.form-control(type="text", name="music", value = productMethod.music)
+                            
+                            h5.text-secondary.mb-3 Kết nối ----------------------------------------------
+                            .form-row
+                                .form-group.col-md-6
+                                    label(for="mobileNetwork") Mạng di động
+                                    input#mobileNetwork.form-control(type="text", name="mobileNetwork", value = productMethod.mobileNetwork)
+
+                                .form-group.col-md-6
+                                    label(for="sim") SIM
+                                    input#sim.form-control(type="text", name="sim", value = productMethod.sim)
+                            .form-row
+                                .form-group.col-md-6
+                                    label(for="wifi") Wifi
+                                    input#wifi.form-control(type="text", name="wifi", value = productMethod.wifi)
+
+                                .form-group.col-md-6
+                                    label(for="gps") GPS
+                                    input#gps.form-control(type="text", name="gps", value = productMethod.gps)
+                            .form-row
+                                .form-group.col-md-6
+                                    label(for="bluetooth") Bluetooth
+                                    input#bluetooth.form-control(type="text", name="bluetooth", value = productMethod.bluetooth)
+
+                                .form-group.col-md-6
+                                    label(for="port") Cổng kết nối/sạc
+                                    input#port.form-control(type="text", name="port", value = productMethod.port)
+                            .form-row
+                                .form-group.col-md-6
+                                    label(for="headphoneJack") Jack tai nghe
+                                    input#headphoneJack.form-control(type="text", name="headphoneJack", value = productMethod.headphoneJack)
+
+                                .form-group.col-md-6
+                                    label(for="otherConnections") Kết nối khác
+                                    input#otherConnections.form-control(type="text", name="otherConnections", value = productMethod.otherConnections)
+
+                            h5.text-secondary.mb-3 Thiết kế & chất liệu ----------------------------------------------
+                            .form-row
+                                .form-group.col-md-6
+                                    label(for="design") Thiết kế
+                                    input#design.form-control(type="text", name="design", value = productMethod.design)
+
+                                .form-group.col-md-6
+                                    label(for="material") Chất liệu
+                                    input#material.form-control(type="text", name="material", value = productMethod.material)
+                            .form-row
+                                .form-group.col-md-6
+                                    label(for="dimensions") Kích thước, khối lượng
+                                    input#dimensions.form-control(type="text", name="dimensions", value = productMethod.dimensions)
+
+                                .form-group.col-md-6
+                                    label(for="launchDate") Thời điểm ra mắt
+                                    input#launchDate.form-control(type="text", name="launchDate", value = productMethod.launchDate)
+                            .form-row
+                                .form-group.col-md-6
+                                    label(for="brand") Hãng
+                                    input#brand.form-control(type="text", name="brand", value = productMethod.brand)
+                            
+        button.btn.btn-success.btn-block.mt-4(type="button" btn-create) Lưu
+
+        script(src="/public/admin/scripts/create.products.js") 
