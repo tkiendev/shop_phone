@@ -1,0 +1,7 @@
+mixin parentCtegory(category , i = 0)
+    - var x = Array(i+1).fill("_").join(" ");
+    each item, index in category
+        option(value=item.id) #{x} #{item.name}
+        - if(item.children)
+            - var g = index + 1
+            + parentCtegory(item.children, g)

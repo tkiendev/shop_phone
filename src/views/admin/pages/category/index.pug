@@ -1,0 +1,98 @@
+extends ../../layouts/default.pug
+
+block content
+    .container-fluid.mt-5
+        h2.mb-4 Quản lý danh mục sản phẩm
+
+        // BỘ LỌC
+        .card.mb-4.shadow-sm
+            .card-body
+                .row
+                    .col-md-6
+                        form.form-inline(action="/admin/products/change-multi?_method=PATCH", method="POST", change-multi)
+                            input.d-none(type="text", name="ids")
+                            select.form-control.mr-2#change-multi(style="text-align: center;" name ="action")
+                                option(value="") -- Thay đổi nhanh --
+                                option(value="change-delete") Xóa nhiều danh mục
+                                option(value="change-position") Thay đổi vị trí nhiều sản phẩm
+                                option(value="change-active") Thay đổi trạng thái hoạt động
+                                option(value="change-inactive") Thay đổi trạng thái dừng hoạt động
+                            button.btn.btn-primary(type="submit", id="filterBtn") Thay đổi
+                    .col-md-6.text-right
+                            a.btn.btn-outline-success#addProductBtn(href='/admin/category/create') Thêm danh mục
+                            a.btn.btn-outline-danger#trashProductBtn(href='/admin/products/recycle-bin') Thùng rác
+
+        .card.shadow-sm
+            .card-header
+                h4.mb-2(style="text-align: center;") Danh mục sản phẩm
+                .row.mb-3
+                    .col-10
+                        .form-inline
+                            input.form-control.mr-2#searchName(type="text", placeholder="Tìm theo tên...", value=keywordSearch)
+                            select.form-control.mr-2#filterStatus
+                                option(value="") -- Trạng thái --
+                                option(value="active", selected=(status === 'active')) Hoạt động
+                                option(value="inactive", selected=(status === 'inactive')) Dừng hoạt động
+                            button.btn.btn-primary(type="button", filterBtn) Lọc
+
+                    .col-2.text-right
+                        select.form-control.mr-2#filterSort(name="sortName")
+                            option(value="") -- Sắp xếp --
+                            option(value="price" valueSort="asc") Giá thấp
+                            option(value="price" valueSort="desc") Giá cao
+                            option(value="name" valueSort="asc") Tên từ A-Z
+                            option(value="name" valueSort="desc") Tên từ Z-A
+                            option(value="position" valueSort="desc") Vị trí từ cao đến thấp
+                            option(value="position" valueSort="asc") Vị trí từ thấp đến cao
+
+            .card-body
+                table.table.table-bordered.table-hover
+                    thead.thead-dark
+                        tr( style="text-align: center;" )
+                            th 
+                                input(type="checkbox", name="allSelect", id="selectAll")
+                            th Ảnh
+                            th Tên
+                            th Danh mục cha
+                            th Trạng thái
+                            th Hành động
+
+                        tbody
+                            if categorys.length === 0
+                                tr
+                                    td(colspan="9", style="text-align: center;") Không có sản phẩm nào.
+                            else
+                                each category in categorys
+                                    tr(id=category.id  style="text-align: center;" )
+                                        td
+                                            input(type="checkbox", name="selected", value=category.id)
+                                        td
+                                            img(src=category.images, alt=category.name, style="width: 60px; height: 60px; object-fit: cover; border-radius: 4px;")
+                                        td #{category.name}
+                                        td Danh mục cha
+                                        td( status=category.status , style="cursor: pointer;" )
+                                            if category.status == 'active'
+                                                span.badge.badge-success Hoạt động
+                                            else if category.status == 'inactive'
+                                                span.badge.badge-danger Ngừng hoạt động
+                                        td
+                                            a.btn.btn-sm.btn-info.mt-1(type="detail", href=`/admin/categorys/detail/${category.id}`) Xem
+                                            a.btn.btn-sm.btn-warning.mt-1(type="edit", href=`/admin/categorys/edit/${category.id}`) Sửa
+                                            button.btn.btn-sm.btn-danger.mt-1(type="delete") Xóa
+
+
+        nav.mt-4.d-none
+            ul.pagination(id="pagination")
+                li.page-item(page = (currentPage - 1) class=(currentPage == 1 ? "d-none" : ""))
+                    span.page-link «
+                - const pages = Array.from({ length: lengthPage }, (_, i) => i + 1);
+                each page in pages 
+                    li.page-item(page = page class=(currentPage == page ? "active" : ""))
+                        span.page-link #{page}
+                li.page-item(page = (currentPage + 1) class=(currentPage == lengthPage ? "d-none" : ""))
+                    span.page-link »
+
+    form(action="/admin/change-status", method="POST" , form-change-status class="d-none")
+    form(action="/admin/products", method="POST" , form-delete class="d-none")
+    
+    script(type="module", src="/public/admin/scripts/product.js") 

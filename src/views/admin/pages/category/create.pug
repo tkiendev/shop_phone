@@ -1,0 +1,39 @@
+extends ../../layouts/default.pug
+include ../../mixins/parent-category.pug
+ 
+block content 
+    .container.mt-5.pt-5
+        h2.text-center.mb-4.text-primary Thêm sản phẩm mới
+        .card.shadow
+            .card-body
+                form(action="/admin/category/create?_method=PATCH", method="POST", form-create, enctype="multipart/form-data")
+                    .form-row
+                        .form-group.col-md-6
+                            label(for="name") Tên danh mục
+                            input#name.form-control(type="text", name="name", required)
+
+                        .form-group.col-md-6
+                            label(for="parentId") Danh mục cha
+                            select#parentId.form-control(name="parentId")
+                                + parentCtegory(categorys)
+
+                    .form-group
+                        label(for="image") Hình ảnh
+                        input#image.form-control-file(type="file", name="image", accept="image/*", multiple)
+
+                    .form-group
+                        label(for="description") Mô tả
+                        textarea#description.form-control(name="description", rows="3")
+
+
+                    .form-row
+                        .form-group.col-md-6
+                            label Trạng thái
+                                .form-check.form-check-inline.ml-2
+                                    input#active.form-check-input(type="radio", name="status", value="active", checked)
+                                    label.form-check-label(for="active") Hoạt động
+                                .form-check.form-check-inline.ml-2
+                                    input#inactive.form-check-input(type="radio", name="status", value="inactive")
+                                    label.form-check-label(for="inactive") Dừng hoạt động
+
+                    button.btn.btn-success.btn-block.mt-4(type="submit" btn-create) ➕ Thêm Danh mục
