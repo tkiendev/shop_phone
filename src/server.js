@@ -3,7 +3,7 @@ const app = express();
 
 require('dotenv').config();
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 1111;
 
 const userRoute = require('./route/user/index.route.js');
 const adminRote = require('./route/admin/index.route.js');
@@ -24,9 +24,9 @@ app.use(cookieParser('ngvaergeralng'));
 app.use(session({ cookie: { maxAge: 60000 } }));
 app.use(flash());
 
-// Connect mongoDb 
-const Connection = require('./config/connectionDb');
-Connection();
+// Connect mySql 
+// const Connection = require('./config/connectionDb');
+// Connection();
 
 const path = require('path');
 app.use('/public', express.static(path.join(__dirname, '../', 'public')));
@@ -35,7 +35,7 @@ app.use('/public', express.static(path.join(__dirname, '../', 'public')));
 app.set('view engine', 'pug');
 app.set('views', __dirname + `/views`);
 
-// route
+// route    
 userRoute(app);
 adminRote(app);
 

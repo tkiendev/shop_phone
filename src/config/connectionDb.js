@@ -1,16 +1,24 @@
-const mongoose = require('mongoose');
+require('dotenv').config();
+const mysql = require('mysql2/promise');
 
-async function connectDB() {
+let connection = null;
+
+const initConnection = async () => {
+    if (connection) return connection;
     try {
-        await mongoose.connect(process.env.MONGODB_URL);
-        console.log('Kết nối MongoDB thành công');
-
-        mongoose.connection.on('error', (err) => {
-            console.error('MongoDB connection error:', err.message);
+        connection = await mysql.createConnection({
+            host: process.env.MYSQL_HOST || 'localhost',
+            user: process.env.MYSQL_USER || 'root',
+            password: process.env.MYSQL_PASSWORD || '',
+            database: process.env.MYSQL_DATABASE || '',
         });
-    } catch (err) {
-        console.error('Lỗi khi kết nối MongoDB:', err.message);
-    }
-}
 
-module.exports = connectDB;
+        console.log('✅ Kết nối MySQL thành công');
+        return connection;
+    } catch (error) {
+        console.error('❌ Kết nối MySQL thất bại:', error.message);
+        return null;
+    }
+};
+
+module.exports = initConnection;

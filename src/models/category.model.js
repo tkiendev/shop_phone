@@ -1,25 +1,16 @@
-const mongoose = require('mongoose');
+// const conection = require('../config/connectionDb');
 
-const categoryProductSchema = new mongoose.Schema({
-    name: String,
-    images: String,
-    description: String,
-    parentId: {
-        type: String,
-        default: ''
-    },
-    status: {
-        type: String,
-        enum: ['active', 'inactive'],
-        default: 'inactive'
-    },
-    deleted: {
-        type: Boolean,
-        default: false
-    }
-}, {
-    timestamps: true
-});
+// const categoryProductModel = (query) => {
+//     return new Promise(async (resolve, reject) => {
+//         try {
+//             let sql = query;
+//             const params = [];
+//             const [rows] = await conection.execute(sql, params);
+//             resolve(rows);
+//         } catch (error) {
+//             reject(error);
+//         }
+//     });
+// }
 
-const categoryProductModel = mongoose.model('category-products', categoryProductSchema);
-module.exports = categoryProductModel;
+// module.exports = categoryProductModel;
